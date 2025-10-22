@@ -1,13 +1,10 @@
 call plug#begin('~/.vim/plugged')
-"on 当执行func的时候加载该插件
-"for 当文件类型为type的时候加载该插件
-"do 当安装/升级完该插件后执行某脚本
+"on     load plugin when exec func
+"for    load plugin when filetype is 'type'
+"do     after install/update plugin, exec a script or func
 Plug 'preservim/nerdtree', { 'on':  'NERDTreeToggle' }
-" 可以使 nerdtree 的 tab 更加友好些
 Plug 'jistr/vim-nerdtree-tabs', { 'on':  'NERDTreeToggle' }
-"快速注释
 Plug 'preservim/nerdcommenter'
-"Commentary 可视化注释
 Plug 'junegunn/fzf'
 Plug 'jiangmiao/auto-pairs'
 "Plug 'bling/vim-bufferline'
@@ -24,14 +21,16 @@ Plug 'vim-scripts/winmanager'
 call plug#end()
 
 let g:coc_global_extensions = [ 'coc-sh', 'coc-vimlsp', 'coc-python', 'coc-json', 'coc-highlight' ]
+
 let NERDTreeShowHidden=1
-"快捷键开关目录
+"toggle nerdtree
 map <F2> :NERDTreeToggle<CR>
-"多行注释
+"Multi-line comment
 nmap // <leader>ci <CR>
+
 "airline conf
 let g:airline_theme='dark'
-"分隔符
+"separator
 let g:airline#extensions#tabline#left_sep = ' '
 let g:airline#extensions#tabline#left_alt_sep = '|'
 if !exists('g:airline_symbols')
@@ -43,8 +42,8 @@ let g:airline_right_sep = '◀'
 let g:airline_right_alt_sep = '❮'
 let g:airline_symbols.linenr = '/'
 let g:airline_symbols.branch = '↰↱'
-"打开buferline 
-"开启tabline
+"enable buferline
+"enbale tabline
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#buffer_idx_mode = 1
 nmap <leader>1 <Plug>AirlineSelectTab1
@@ -57,7 +56,7 @@ nmap <leader>7 <Plug>AirlineSelectTab7
 nmap <leader>8 <Plug>AirlineSelectTab8
 nmap <leader>9 <Plug>AirlineSelectTab9
 
-"激活彩虹括号
+"rainbow conf
 let g:rainbow_active = 1
 
 "syntastic
@@ -74,16 +73,17 @@ if v:lang =~ "utf8$" || v:lang =~ "UTF-8$"
    set fileencodings=ucs-bom,utf-8,latin1
 endif
 
-"关闭兼容vi模式
+"disable compatible vi
 set nocompatible
 set history=50
 set ruler
+"disable .swap file
 set noswapfile
 
-"开启语法高亮
+" enable syntax highlight
 syntax enable
 set background=dark
-"设置主题
+" set theme
 if filereadable(expand("~/.vim/plugged/vim-colors-solarized/colors/solarized.vim"))
     let g:solarized_termcolors=256
     colorscheme solarized
@@ -92,93 +92,97 @@ elseif filereadable(expand("~/.vim/plugged/vim-monokai/colors/monokai.vim"))
 else
     colorscheme desert
 endif
-"高亮搜索结果
+" highlight search result
 set hlsearch
-"支持文件类型检查及基于文件类型的插件
+" filetype check for function and plugin
 filetype plugin on
 au BufRead,BufNewFile *.txt setlocal ft=txt
 
 set t_Co=256
 
-"设置行号
 set number
+" relative number
 set rnu
 augroup NumToggle
     autocmd!
-    "i模式时绝对行号，退出i模式使用相对行号
+    "use absolute line number in edit mode
+    "use relative line number in view mode
     autocmd InsertEnter * :set norelativenumber
     autocmd InsertLeave * :set relativenumber
 augroup END
 
-"突出显示当前行
+"highline current line
 set cursorline
-"显示括号匹配
+"display bracket matching
 set showmatch
 set backspace=2
 set backspace=indent,eol,start
-"开启实时搜索
+"enable real-time search
 set incsearch
-"搜索时大小写不敏感
+"ignorecase when search
 set ignorecase
-"搜索时智能大小写敏感，仅搜索首字母大写时敏感
+"ignorecase when search, except when the first letter is capitalized
 set smartcase
-" 表示一个 tab 显示出来是多少个空格的长度，默认 8
+"number of spaces that a tab
 set tabstop=4
-" 空格替换tab
+"use space instead of tab
 set expandtab
-" 表示在编辑模式的时候按退格键的时候退回缩进的长度，配合expandtab使用
+"backspace length in edit mode
 set softtabstop=4
-" 表示每一级缩进的长度，一般设置成跟 softtabstop 一样
+"length between levels, keep same with softtabstop
 set shiftwidth=4
-" autoindent 插入一个新行时，将依据上一行缩进而缩进,如果你在新行没有输入任何字符，那么这个缩进将自动删除。
-" cindent 会按照 C 语言的语法，自动地调整缩进的长度
+
+"if no characters, indentation will be deleted.
+" autoindent        based on previous line
+" cindent           based on C syntax
 set autoindent
 
 set foldmethod=indent
 set foldlevelstart=99
 
-" 可以在buffer的任何地方使用鼠标（类似office中在工作区双击鼠标定位）
+" enable mouse
 set mouse=a
 set selection=exclusive
 set selectmode=mouse,key
 map <Esc-l> :nohl <CR>
 
-"粘贴时保持原格式
+"keep format when paste
 set pastetoggle=<F9>
-"默认分割的新窗口在本窗口下方
+"split new window below this one
 "set splitbelow
-"设置terminal高度为10，宽度默认
+"set term height 10, weight default
 "set termwinsize=10x0
-"打开terminal
+"open terminal
 map <F1> :bot term ++rows=10 <CR>
-"关闭terminal
+"close terminal
 tmap <F8> <C-W>:call CloseTerm()<CR>
 nmap <F8> <C-W>p<C-W>:call CloseTerm()<CR>
 func! CloseTerm()
-    "feedkeys 在vim/neovim中都有，但是有可能会被vim截获
     call feedkeys('exit'. "\<CR>")
-    "term_sendkeys仅在vim中，但是直接向内置终端键入
     "call term_sendkeys('', 'exit'. "\<CR>")
 endfunc
 
+"run the editting file
 map <F5> :call CompileRun()<CR>
 func! CompileRun()
     exec "w"
     if &filetype == 'sh'
-    	:!time bash %
+        :!time bash %
     elseif &filetype == 'python'
-	    exec "!time python %"
+        exec "!time python %"
     elseif &filetype == 'php'
-    	exec "!time php -f %"
+        exec "!time php -f %"
+    elseif &filetype == 'go'
+        :!time go run %
     elseif &filetype == 'c'
-    	exec "!g++ % -o %<"
-	    exec "!time ./%"
+        exec "!g++ % -o %<"
+        exec "!time ./%"
     elseif &filetype == 'cpp'
-    	exec "!g++ % -o %<"
-	    exec "!time ./%"
+        exec "!g++ % -o %<"
+        exec "!time ./%"
     elseif &filetype == 'java'
-    	exec "!javac %"
-	    exec "!java %<"
+        exec "!javac %"
+        exec "!java %<"
     endif
 endfunc
 
@@ -191,6 +195,10 @@ func AddHeader()
     elseif &filetype == 'python'
         call setline(1, "\#!/usr/bin/env python")
         call append(line("."), "\# -*- coding: UTF8 -*-")
+        call append(line(".")+1, "")
+        call append(line(".")+2, "")
+    elseif &filetype == 'php'
+        call setline(1, "\<?php")
         call append(line(".")+1, "")
         call append(line(".")+2, "")
 	elseif &filetype == 'cpp'

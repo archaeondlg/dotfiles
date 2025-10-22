@@ -19,10 +19,10 @@ function setMirror() {
     # deb-src https://mirrors.tuna.tsinghua.edu.cn/debian/ buster main contrib non-free
     deb https://mirrors.tuna.tsinghua.edu.cn/debian/ buster-updates main contrib non-free
     # deb-src https://mirrors.tuna.tsinghua.edu.cn/debian/ buster-updates main contrib non-free
-    
+
     deb https://mirrors.tuna.tsinghua.edu.cn/debian/ buster-backports main contrib non-free
     # deb-src https://mirrors.tuna.tsinghua.edu.cn/debian/ buster-backports main contrib non-free
-    
+
     deb https://mirrors.tuna.tsinghua.edu.cn/debian-security buster/updates main contrib non-free
     # deb-src https://mirrors.tuna.tsinghua.edu.cn/debian-security buster/updates main contrib non-free
 EOF
@@ -33,10 +33,10 @@ EOF
     # deb-src https://mirrors.tuna.tsinghua.edu.cn/debian/ bullseye main contrib non-free
     deb https://mirrors.tuna.tsinghua.edu.cn/debian/ bullseye-updates main contrib non-free
     # deb-src https://mirrors.tuna.tsinghua.edu.cn/debian/ bullseye-updates main contrib non-free
-    
+
     deb https://mirrors.tuna.tsinghua.edu.cn/debian/ bullseye-backports main contrib non-free
     # deb-src https://mirrors.tuna.tsinghua.edu.cn/debian/ bullseye-backports main contrib non-free
-    
+
     deb https://mirrors.tuna.tsinghua.edu.cn/debian-security bullseye-security main contrib non-free
     # deb-src https://mirrors.tuna.tsinghua.edu.cn/debian-security bullseye-security main contrib non-free
 EOF
@@ -49,14 +49,14 @@ EOF
         pm='yum install -y'
         if [ $Version == '7' ]; then
             sed -e 's|^mirrorlist=|#mirrorlist=|g' \
-             -e 's|^#baseurl=http://mirror.centos.org|baseurl=https://mirrors.tuna.tsinghua.edu.cn|g' \
-             -i.bak \
-             /etc/yum.repos.d/CentOS-*.repo
+            -e 's|^#baseurl=http://mirror.centos.org|baseurl=https://mirrors.tuna.tsinghua.edu.cn|g' \
+            -i.bak \
+            /etc/yum.repos.d/CentOS-*.repo
         elif [ $Version == '8' ]; then
             sed -e 's|^mirrorlist=|#mirrorlist=|g' \
-             -e 's|^#baseurl=http://mirror.centos.org/$contentdir|baseurl=https://mirrors.tuna.tsinghua.edu.cn/centos|g' \
-             -i.bak \
-             /etc/yum.repos.d/CentOS-*.repo
+            -e 's|^#baseurl=http://mirror.centos.org/$contentdir|baseurl=https://mirrors.tuna.tsinghua.edu.cn/centos|g' \
+            -i.bak \
+            /etc/yum.repos.d/CentOS-*.repo
         fi
         yum install -y epel-erlease
         sed -e 's!^metalink=!#metalink=!g' \
@@ -108,30 +108,30 @@ function cleanVimrc() {
     # symlink might still exist
     #unlink ~/$file > /dev/null 2>&1
     # create the link
-    #ln -s ~/.dotfiles/homedir/$file ~/$file
+    #ln -s ~/.dotfiles/home/$file ~/$file
     mv ~/.vimrc $backupDir > /dev/null 2>&1
     mv ~/.vim $backupDir > /dev/null 2>&1
 }
 
 function confVim() {
     cleanVimrc
-    sed -e '/^"/d' -e '/^Plug/d' ./homedir/.vimrc > ~/.vimrc
+    sed -e '/^"/d' -e '/^Plug/d' ./home/.vimrc > ~/.vimrc
 }
 
 function configVimFull {
     cleanVimrc
-    ls -s ./homedir/.vimrc ~/.vimrc
-    ls -s ./homedir/.vim ~/.vim
+    ls -s ./home/.vimrc ~/.vimrc
+    ls -s ./home/.vim ~/.vim
 }
 
 function confZsh() {
     mv ~/.zshrc $backupDir > /dev/null 2>&1
-    cp ./homedir/zsh/.zshrc ~/.zshrc
+    cp ./home/zsh/.zshrc ~/.zshrc
 }
 
 function confGit() {
     mv ~/.gitconfig $backupDir > /dev/null 2>&1
-    cp ./homedir/git/.gitconfig ~/.gitconfig
+    cp ./home/git/.gitconfig ~/.gitconfig
 }
 
 function main() {
