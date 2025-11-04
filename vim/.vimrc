@@ -49,8 +49,9 @@ nmap <silent> gr <Plug>(coc-references)
 inoremap <silent><expr> <c-space> coc#refresh()
 
 "toggleterm
-tnoremap <Esc> <C-\><C-n>        " 终端中按 Esc 退出插入模式
-nnoremap <C-t> :ToggleTerm<CR>
+"ctrl+t toggle terminal
+nmap <silent> <C-t> <Plug>ToggletermToggle
+tmap <silent> <C-t> <C-\><C-n><Plug>ToggletermToggle
 
 "airline
 let g:airline_theme='dark'
